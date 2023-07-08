@@ -10,6 +10,7 @@ const CategoryController = {
             res.status(500).send({ message: "Ha habido un error al crear la categoría" });
         }
     },
+
     async update(req, res) {
         await Category.update(req.body, { where: { name: req.params.name } });
         res.send({ message: "La categoría se ha actualizado con éxito" });
@@ -67,7 +68,10 @@ const CategoryController = {
     },
 
     async delete(req, res) {
-        await Category.destroy({ where: { name: req.params.name } });
+        const entityDeleted = await Category.destroy({ where: { name: req.params.name } });
+        if (entityDeleted == 0) {
+            return res.status(404).send({ message: "No existe una categoría con ese nombre" });
+        }
         res.send({ message: "La categoría se ha eliminado con éxito" });
     },
 };
