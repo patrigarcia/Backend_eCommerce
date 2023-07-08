@@ -10,6 +10,7 @@ const ProductController = {
             res.status(500).send({ message: "Ha habido un error al crear el producto" });
         }
     },
+
     async update(req, res) {
         try {
             await Product.update(req.body, { where: { name: req.params.name } });
