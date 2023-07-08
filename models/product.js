@@ -18,19 +18,40 @@ module.exports = (sequelize, DataTypes) => {
             name: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                notEmpty: true,
+                validate: {
+                    notNull: {
+                        msg: "Por favor introduce el nombre del producto",
+                    },
+                },
             },
             description: {
                 type: DataTypes.STRING,
                 allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "El producto debe tener una descripción",
+                    },
+                },
             },
             price: {
                 type: DataTypes.FLOAT,
                 unique: true,
                 allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "Por favor introduce el precio",
+                    },
+                },
             },
             stock: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "Debe introducir el stock disponible",
+                    },
+                },
             },
         },
         {
