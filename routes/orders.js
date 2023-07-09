@@ -2,10 +2,12 @@ const express = require("express");
 const router = express.Router();
 const OrderController = require("../controllers/OrderController");
 
-// Ruta para crear una nueva orden
-router.post("/productId", OrderController.insert);
-router.get("/", OrderController.getAll);
+const { authentication, isAdmin } = require("../middleware/authentication");
 
-router.put("/:name", OrderController.update);
+// Ruta para crear un pedido
+router.post("/productId", authentication, OrderController.insert);
+router.get("/users", authentication, OrderController.getUserOrders);
+router.get("/", OrderController.getAll);
+router.put("/:Id", OrderController.update);
 
 module.exports = router;

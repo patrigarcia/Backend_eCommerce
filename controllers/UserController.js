@@ -15,6 +15,7 @@ const UserController = {
             res.status(500).send({ message: "Ha habido un error al crear el usuario" });
         }
     },
+
     async update(req, res) {
         try {
             await User.update(req.body, { where: { name: req.params.name } });
@@ -47,7 +48,7 @@ const UserController = {
 
     async login(req, res) {
         try {
-            const user = await User.findOne({ where: { email: req.body.email } });
+            const user = await User.findOne({ where: { mail: req.body.email } });
             if (!user) {
                 return res.status(400).send({ message: "Usuario o contraseña incorrecta" });
             }
