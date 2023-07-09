@@ -38,6 +38,9 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
+            password: DataTypes.STRING,
+            role: DataTypes.STRING,
+            confirmed: DataTypes.BOOLEAN,
         },
         {
             sequelize,
