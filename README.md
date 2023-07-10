@@ -8,23 +8,23 @@
 
 ---
 
-<span style="color: fuchsia;">**Included functionalities:**</span>
+**<h4 style="color: fuchsia;">Included functionalities:</h4>**
 
 1. Product category management.
 2. Product inventory management.
 3. User management (login, logout, registration, roles).
 4. Order management.
 
-<span style="color: fuchsia;">**Backend architecture:**</span>
+**<h4 style="color: fuchsia;">Backend architecture:</h4>**
 
 -   Product category management: Allows the creation, update, and deletion of product categories.
 -   Product inventory management: Enables the administration of product inventory, including the creation, update, and deletion of products.
 -   User management: Provides functions for user registration, login and logout, permission management, and user roles.
 -   Order management: Allows the creation and management of customer orders.
 
-<span style="color: fuchsia;">\***\*Technologies used in the backend architecture:\*\***</span>
+**<h4 style="color: fuchsia;">Technologies used in the backend architecture:</h4>**
 ![foto](assets/logos.png)
-
+ 
 -   **Database:** <span style="color: #00BFFF;">**MySQL**</span> has been used as the database to store information related to categories, products, users, and orders.
 -   **ORM Framework:** <span style="color: #00BFFF;">**Sequelize**</span> is used as an Object-Relational Mapping (ORM) tool to facilitate interaction with the MySQL database.
 -   **Backend technology:** <span style="color: #00BFFF;">**Node.js**</span> has been used to develop the backend application, leveraging its ability to handle requests and responses asynchronously.
