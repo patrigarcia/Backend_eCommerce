@@ -24,7 +24,7 @@
 
 **<h4 style="color: fuchsia;">Technologies used in the backend architecture:</h4>**
 ![foto](assets/logos.png)
- 
+
 -   **Database:** <span style="color: #00BFFF;">**MySQL**</span> has been used as the database to store information related to categories, products, users, and orders.
 -   **ORM Framework:** <span style="color: #00BFFF;">**Sequelize**</span> is used as an Object-Relational Mapping (ORM) tool to facilitate interaction with the MySQL database.
 -   **Backend technology:** <span style="color: #00BFFF;">**Node.js**</span> has been used to develop the backend application, leveraging its ability to handle requests and responses asynchronously.
@@ -87,9 +87,17 @@ It consists of the development of a REST API for an e-commerce, for which a data
 
 ## Future work
 
-1. Allow the user to select the question's theme, difficulty and number of questions to be answered.
-2. Play sounds when players gets correct/incorrect answers.
-3. Show a graph with the best players according to their scores.
-4. Show a picture on every question for visual hint.
+**Functional requirements:**
 
-#### Developed by _Patricia González Garcia_.
+-   Sending an account activation email.
+-   Order confirmation through OTP (One Time Password).
+-   Allowing users to write product reviews.
+
+**Non-functional requirements:**
+
+-   Adding more API tests.
+-   Configuring Jest and Supertest to run tests using an in-memory database (such as SQLite).
+
+---
+
+#### Developed by _Patrizia González Garcia_.
