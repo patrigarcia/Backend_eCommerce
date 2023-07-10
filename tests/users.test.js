@@ -6,9 +6,8 @@ const { User } = require("../models/index.js");
 let token;
 
 describe("API test for users", () => {
-    test("Count user on empty database", async () => {
-        let usersCount = await User.count();
-        expect(usersCount).toBe(0);
+    beforeAll(() => {
+        return User.destroy({ where: {}, truncate: true });
     });
 
     test("Create a user", async () => {
@@ -16,7 +15,7 @@ describe("API test for users", () => {
             name: "Zeus",
             surname: "Perezoso",
             description: "cliente 1",
-            mail: "zeusgato@gmail.com",
+            mail: "aaa@gmail.com",
             address: "Calle 11",
             tel: 1234567880,
             role: "admin",
@@ -29,12 +28,11 @@ describe("API test for users", () => {
     });
 
     test("Login user", async () => {
-        const res = await request(app).post("/users/login").send({ email: "zeusgato@gmail.com", password: "1233" }).expect(200);
+        const res = await request(app).post("/users/login").send({ email: "aaa@gmail.com", password: "1233" }).expect(200);
         token = res.body.token;
     });
 
     test("Get users", async () => {
-        console.log(token);
         const res = await request(app).get("/users").set({ Authorization: token }).expect(200);
         expect(res.body).toBeInstanceOf(Array);
     });

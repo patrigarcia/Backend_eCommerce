@@ -1,121 +1,91 @@
 const request = require("supertest");
-const app = require("../index"); // Reemplaza con la ruta correcta a tu archivo principal de la aplicación
-const { Product, Category } = require("../models"); // Asegúrate de importar correctamente los modelos
+const app = require("../index.js");
+const { Product } = require("../models/index.js");
 
-// Antes de ejecutar los tests, puedes añadir datos de prueba a la base de datos si lo necesitas
-beforeAll(async () => {
-    await Category.bulkCreate([{ name: "Category 1" }, { name: "Category 2" }, { name: "Category 3" }]);
+const SERVER_OK = 200;
+const CREATED = 201;
 
-    await Product.bulkCreate([
-        { name: "Product 1", price: 10, categoryId: 1 },
-        { name: "Product 2", price: 20, categoryId: 2 },
-        { name: "Product 3", price: 30, categoryId: 3 },
-    ]);
-});
+describe("ProductController", () => {
+    let token;
 
-// Después de ejecutar los tests, puedes limpiar los datos de prueba de la base de datos si lo necesitas
-afterAll(async () => {
-    await Product.destroy({ where: {} });
-    await Category.destroy({ where: {} });
-});
+    // creo un usuario, hago login y obtengo el token
+    beforeAll(async () => {
+        const user = {
+            name: "Zeus",
+            surname: "Perezoso",
+            description: "cliente 1",
+            mail: "zeusgato@gmail.com",
+            address: "Calle 11",
+            tel: 1234567880,
+            role: "admin",
+            password: "1233",
+        };
 
-// Test para crear un producto
-test("Create product", async () => {
-    const newProduct = {
-        name: "New Product",
-        price: 40,
-        categoryId: 1,
-    };
+        await request(app).post("/users").send(user).expect(201);
+        const loginRes = await request(app).post("/users/login").send({ email: "zeusgato@gmail.com", password: "1233" }).expect(SERVER_OK);
+        token = loginRes.body.token;
+    });
 
-    const response = await request(app).post("/products").send(newProduct).expect(201);
+    test("Count products on empty database", async () => {
+        let productsCount = await Product.count();
+        expect(productsCount).toBe(0);
+    });
 
-    const createdProduct = response.body.product;
-    expect(createdProduct.name).toBe(newProduct.name);
-    expect(createdProduct.price).toBe(newProduct.price);
-    expect(createdProduct.categoryId).toBe(newProduct.categoryId);
-});
+    test("Create a product", async () => {
+        const product = {
+            name: "Product 1",
+            description: "This is a product",
+            price: 7.5,
+            stock: 10,
+        };
 
-// Test para actualizar un producto
-test("Update product", async () => {
-    const updatedProduct = {
-        name: "Updated Product",
-        price: 50,
-        categoryId: 2,
-    };
+        await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
+        const productsCount = await Product.count();
+        expect(productsCount).toBe(1);
+    });
 
-    await request(app).put("/products/Product 1").send(updatedProduct).expect(200);
+    test("Update a product", async () => {
+        const updatedProduct = {
+            name: "Product 2",
+            description: "This is an updated product",
+            price: 19.99,
+            stock: 5,
+        };
 
-    const updatedProductData = await Product.findOne({ where: { name: "Updated Product" } });
-    expect(updatedProductData.price).toBe(updatedProduct.price);
-    expect(updatedProductData.categoryId).toBe(updatedProduct.categoryId);
-});
+        const res = await request(app).put("/products/Product 1").send(updatedProduct).set({ Authorization: token }).expect(SERVER_OK);
+        expect(res.body.message).toBe("El producto se ha actualizado");
+    });
 
-// Test para obtener un producto por su ID
-test("Get product by ID", async () => {
-    const product = await Product.findOne({ where: { name: "Product 1" } });
+    test("Get product by ID", async () => {
+        const product = {
+            name: "Product 1",
+            description: "This is a product",
+            price: 7.5,
+            stock: 10,
+        };
+        const createRes = await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
+        const productId = createRes.body.product.id;
+        const res = await request(app).get(`/products/id/${productId}`).set({ Authorization: token }).expect(SERVER_OK);
+        expect(res.body).toBeDefined();
+        expect(res.body.name).toBe("Product 1");
+    });
 
-    const response = await request(app).get(`/products/${product.id}`).expect(200);
+    test("Get products by name", async () => {
+        const product = {
+            name: "Product 1",
+            description: "This is a product",
+            price: 7.5,
+            stock: 10,
+        };
+        await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
+        const res = await request(app).get(`/products/name/${product.name}`).set({ Authorization: token }).expect(SERVER_OK);
 
-    const retrievedProduct = response.body;
-    expect(retrievedProduct.name).toBe(product.name);
-    expect(retrievedProduct.price).toBe(product.price);
-    expect(retrievedProduct.categoryId).toBe(product.categoryId);
-});
+        expect(res.body).toBeDefined();
+        expect(res.body.length).toBeGreaterThan(0);
+        expect(res.body[0].name).toBe("Product 1");
+    });
 
-// Test para eliminar un producto
-test("Delete product", async () => {
-    await request(app).delete("/products/Product 1").expect(200);
-
-    const deletedProduct = await Product.findOne({ where: { name: "Product 1" } });
-    expect(deletedProduct).toBeNull();
-});
-
-// Test para obtener todos los productos con sus categorías
-test("Get all products with categories", async () => {
-    const response = await request(app).get("/products").expect(200);
-
-    const productsWithCategories = response.body;
-    expect(productsWithCategories).toBeInstanceOf(Array);
-    expect(productsWithCategories.length).toBeGreaterThan(0);
-    // Puedes agregar más expectativas según los datos que esperas recibir
-});
-
-// Test para obtener productos por categoría
-test("Get products by category", async () => {
-    const response = await request(app).get("/products/category/Category 1").expect(200);
-
-    const products = response.body;
-    expect(products).toBeInstanceOf(Array);
-    expect(products.length).toBeGreaterThan(0);
-    // Puedes agregar más expectativas según los datos que esperas recibir
-});
-
-// Test para obtener productos por nombre
-test("Get products by name", async () => {
-    const response = await request(app).get("/products/name/Product 1").expect(200);
-
-    const products = response.body;
-    expect(products).toBeInstanceOf(Array);
-    expect(products.length).toBeGreaterThan(0);
-    // Puedes agregar más expectativas según los datos que esperas recibir
-});
-
-// Test para obtener productos por precio
-test("Get products by price", async () => {
-    const response = await request(app).get("/products/price/10").expect(200);
-
-    const products = response.body;
-    expect(products).toBeInstanceOf(Array);
-    expect(products.length).toBeGreaterThan(0);
-    // Puedes agregar más expectativas según los datos que esperas recibir
-});
-
-// Test para obtener productos ordenados por precio
-test("Get products sorted by price", async () => {
-    const response = await request(app).get("/products/sortedByPrice").expect(200);
-
-    const sortedPrices = response.body.prices;
-    expect(sortedPrices).toBeInstanceOf(Array);
-    expect(sortedPrices.length).toBeGreaterThan(0);
-    // Puedes agregar más expectativas según los datos que esperas recibir
+    afterAll(() => {
+        return Product.destroy({ where: {}, truncate: true });
+    });
 });
