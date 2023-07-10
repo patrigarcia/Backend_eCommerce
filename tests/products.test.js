@@ -5,17 +5,16 @@ const { Product } = require("../models/index.js");
 
 const SERVER_OK = 200;
 const CREATED = 201;
+let token;
 
 describe("ProductController", () => {
-    let token;
-
     // creo un usuario, hago login y obtengo el token
     beforeAll(async () => {
         const user = {
             name: "Zeus",
             surname: "Perezoso",
             description: "cliente 1",
-            mail: "zeusgato@gmail.com",
+            mail: "zeusgatito@gmail.com",
             address: "Calle 11",
             tel: 1234567880,
             role: "admin",
@@ -23,7 +22,7 @@ describe("ProductController", () => {
         };
 
         await request(app).post("/users").send(user).expect(201);
-        const loginRes = await request(app).post("/users/login").send({ email: "zeusgato@gmail.com", password: "1233" }).expect(SERVER_OK);
+        const loginRes = await request(app).post("/users/login").send({ email: "zeusgatito@gmail.com", password: "1233" }).expect(SERVER_OK);
         token = loginRes.body.token;
     });
 
@@ -138,8 +137,6 @@ describe("ProductController", () => {
         const sortedPrices = res.body.prices.map((product) => product.price);
         expect(sortedPrices).toEqual(sortedPrices.sort((a, b) => b - a));
     });
-
-    
 
     afterAll(() => {
         return Product.destroy({ where: {}, truncate: true });

@@ -22,7 +22,7 @@ describe("CategoryController", () => {
             password: "1233",
         };
 
-        await request(app).post("/users").send(user).expect(201);
+        await request(app).post("/users").send(user).expect(CREATED);
         const loginRes = await request(app).post("/users/login").send({ email: "niñozeus@gmail.com", password: "1233" }).expect(SERVER_OK);
         token = loginRes.body.token;
     });
@@ -47,7 +47,7 @@ describe("CategoryController", () => {
             name: "Updated Category",
         };
 
-        const res = await request(app).put("/categories/update/Category 1").send(updatedCategory).set({ Authorization: token }).expect(200);
+        const res = await request(app).put("/categories/update/Category 1").send(updatedCategory).set({ Authorization: token }).expect(SERVER_OK);
 
         expect(res.body.message).toBe("La categoría se ha actualizado con éxito");
     });
@@ -71,8 +71,8 @@ describe("CategoryController", () => {
         const res = await request(app).get(`/categories/name/${category.name}`).set({ Authorization: token }).expect(SERVER_OK);
 
         expect(res.body).toBeDefined();
-        expect(res.body.length).toBeGreaterThan(0);// verifico que haya elementos en el body
-        expect(res.body[0].name).toBe("Category 2");// verifico que el nombre sea igual
+        expect(res.body.length).toBeGreaterThan(0); // verifico que haya elementos en el body
+        expect(res.body[0].name).toBe("Category 2"); // verifico que el nombre sea igual
     });
 
     test("Delete category by name", async () => {
