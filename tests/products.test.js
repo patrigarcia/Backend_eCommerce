@@ -128,16 +128,18 @@ describe("ProductController", () => {
 
         // Crear los productos
         for (const product of products) {
-            await request(app).post("/products").send(product).set({ Authorization: token }).expect(201);
+            await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
         }
 
         // Obtener los productos ordenados por precio
-        const res = await request(app).get("/products/sortedPrices").set({ Authorization: token }).expect(200);
+        const res = await request(app).get("/products/sortedPrices").set({ Authorization: token }).expect(SERVER_OK);
 
         expect(res.body).toBeDefined();
         const sortedPrices = res.body.prices.map((product) => product.price);
         expect(sortedPrices).toEqual(sortedPrices.sort((a, b) => b - a));
     });
+
+    
 
     afterAll(() => {
         return Product.destroy({ where: {}, truncate: true });
