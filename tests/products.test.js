@@ -1,5 +1,6 @@
 const request = require("supertest");
 const app = require("../index.js");
+
 const { Product } = require("../models/index.js");
 
 const SERVER_OK = 200;
@@ -35,7 +36,7 @@ describe("ProductController", () => {
         const product = {
             name: "Product 1",
             description: "This is a product",
-            price: 7.5,
+            price: 7,
             stock: 10,
         };
 
@@ -48,7 +49,7 @@ describe("ProductController", () => {
         const updatedProduct = {
             name: "Product 2",
             description: "This is an updated product",
-            price: 19.99,
+            price: 19,
             stock: 5,
         };
 
@@ -60,7 +61,7 @@ describe("ProductController", () => {
         const product = {
             name: "Product 1",
             description: "This is a product",
-            price: 7.5,
+            price: 8,
             stock: 10,
         };
         const createRes = await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
@@ -83,6 +84,59 @@ describe("ProductController", () => {
         expect(res.body).toBeDefined();
         expect(res.body.length).toBeGreaterThan(0);
         expect(res.body[0].name).toBe("Product 1");
+    });
+
+    test("Get products by price", async () => {
+        const product = {
+            name: "Product 4",
+            description: "This is a product with price",
+            price: 9.5,
+            stock: 17,
+        };
+
+        await request(app).post("/products").send(product).set({ Authorization: token }).expect(CREATED);
+        const res = await request(app).get(`/products/price/${product.price}`).set({ Authorization: token }).expect(SERVER_OK);
+
+        expect(res.body).toBeDefined();
+        expect(res.body[0].price).toBe("9.50");
+    });
+
+    const { arraySortedBy } = require("jest-extended");
+
+    test("Get products by sorted price", async () => {
+        // Crear productos con diferentes precios
+        const products = [
+            {
+                name: "Product 1",
+                description: "This is a product",
+                price: 7.5,
+                stock: 10,
+            },
+            {
+                name: "Product 2",
+                description: "This is another product",
+                price: 10,
+                stock: 5,
+            },
+            {
+                name: "Product 3",
+                description: "Yet another product",
+                price: 5.99,
+                stock: 15,
+            },
+        ];
+
+        // Crear los productos
+        for (const product of products) {
+            await request(app).post("/products").send(product).set({ Authorization: token }).expect(201);
+        }
+
+        // Obtener los productos ordenados por precio
+        const res = await request(app).get("/products/sortedPrices").set({ Authorization: token }).expect(200);
+
+        expect(res.body).toBeDefined();
+        const sortedPrices = res.body.prices.map((product) => product.price);
+        expect(sortedPrices).toEqual(sortedPrices.sort((a, b) => b - a));
     });
 
     afterAll(() => {
