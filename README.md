@@ -1,18 +1,20 @@
 ![foto](assets/banner.png)
 
-# 💻  E-commerce Backend Project 
 
-## REST API development for e-commerce
+# **<h3 align="center">Backend Project 💻</h3>**
+---
+## **<h4 align="center">REST API development for e-commerce 🛒</h4>**
+---
 
 
-<span style="color: fuchsia;">**The included functionalities are as follows:**</span>
+<span style="color: fuchsia;">**Included functionalities:**</span>
 
 1. Product category management.
 2. Product inventory management.
 3. User management (login, logout, registration, roles).
 4. Order management.
 
-<span style="color: fuchsia;">**The backend architecture functionalities:**</span>
+<span style="color: fuchsia;">**Backend architecture:**</span>
 
 
 - Product category management: Allows the creation, update, and deletion of product categories.
@@ -36,30 +38,53 @@
 
 - General development with <span style="color: #00BFFF;">**Javascript**</span>: Allows for efficient handling of asynchronous requests and seamless API integration.
 
-<span style="color: #00BFFF;">**Postman**</span>
 
-## Project Development 🔧
 
-The project was completed within a seven-day timeframe as part of an exercise for **The Bridge Valencia's FullStack Bootcamp**.
+## **Project Development** 🔧
 
-It consists of three core files: index.html, main.js, and style.css.
-The game logic was developed first, and then followed by the definition of styles.
+The project was completed within a ten-day timeframe as part of an exercise for **The Bridge Valencia's FullStack Bootcamp**.
 
-The necessary functions were implemented to execute the code as efficiently as possible.
+It consists of the development of a REST API for an e-commerce, for which a database with user entities, order, categories and products has been created. With a relationship of (M:N), where an associative entity of orderItem was created, in addition to the relationships (1 : N) between the other entities.
 
-## Technologies Used 💻
+---
 
-Up to this point in the course, the technologies learned and used were the following:
+<span style="color: fuchsia;">**Entity Relationship Diagram:**</span>  
 
--   HTML.
--   CSS.
--   JavaScript (including SPA and API usage with Axios).
--   Bootstrap Framework.
+![foto](assets/der.png)
 
-Preview:
+---
+## **Process steps** 🔩🔧⚙️
 
-![foto](images/gif_musiquizz.gif)
+1) Dependency installations
 
+2) Configuration and database creation
+
+3) Creation of models for each table
+
+4) Model migrations
+
+5) Creation of controllers for endpoints
+
+6) Routes creation
+
+7) Imports
+
+8) Testing with Postman
+
+9) Development of functionality tests and validation  
+  
+
+
+---
+### **Postman preview:**
+- Create user
+- Login
+- Create an order with products
+- Logout
+
+![foto](assets/postman.gif)
+
+---
 ## Future work
 
 1. Allow the user to select the question's theme, difficulty and number of questions to be answered.
