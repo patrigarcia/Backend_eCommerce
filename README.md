@@ -1,11 +1,12 @@
 ![foto](assets/banner.png)
 
-
 # **<h3 align="center">Backend Project 💻</h3>**
----
-## **<h4 align="center">REST API development for e-commerce 🛒</h4>**
+
 ---
 
+## **<h4 align="center">REST API development for e-commerce 🛒</h4>**
+
+---
 
 <span style="color: fuchsia;">**Included functionalities:**</span>
 
@@ -16,29 +17,26 @@
 
 <span style="color: fuchsia;">**Backend architecture:**</span>
 
+-   Product category management: Allows the creation, update, and deletion of product categories.
+-   Product inventory management: Enables the administration of product inventory, including the creation, update, and deletion of products.
+-   User management: Provides functions for user registration, login and logout, permission management, and user roles.
+-   Order management: Allows the creation and management of customer orders.
 
-- Product category management: Allows the creation, update, and deletion of product categories.
-- Product inventory management: Enables the administration of product inventory, including the creation, update, and deletion of products.
-- User management: Provides functions for user registration, login and logout, permission management, and user roles.
-- Order management: Allows the creation and management of customer orders.
-
-<span style="color: fuchsia;">****Technologies used in the backend architecture:****</span>
+<span style="color: fuchsia;">\***\*Technologies used in the backend architecture:\*\***</span>
 ![foto](assets/logos.png)
 
-- **Database:** <span style="color: #00BFFF;">**MySQL**</span> has been used as the database to store information related to categories, products, users, and orders.
-- **ORM Framework:** <span style="color: #00BFFF;">**Sequelize**</span> is used as an Object-Relational Mapping (ORM) tool to facilitate interaction with the MySQL database.
-- **Backend technology:** <span style="color: #00BFFF;">**Node.js**</span> has been used to develop the backend application, leveraging its ability to handle requests and responses asynchronously.
-- **Web server:** <span style="color: #00BFFF;">**Express**</span> is utilized as a web server framework for Node.js, enabling request routing and implementation of API endpoints.
+-   **Database:** <span style="color: #00BFFF;">**MySQL**</span> has been used as the database to store information related to categories, products, users, and orders.
+-   **ORM Framework:** <span style="color: #00BFFF;">**Sequelize**</span> is used as an Object-Relational Mapping (ORM) tool to facilitate interaction with the MySQL database.
+-   **Backend technology:** <span style="color: #00BFFF;">**Node.js**</span> has been used to develop the backend application, leveraging its ability to handle requests and responses asynchronously.
+-   **Web server:** <span style="color: #00BFFF;">**Express**</span> is utilized as a web server framework for Node.js, enabling request routing and implementation of API endpoints.
 
-- Relevant tests for all API endpoints have been conducted using the <span style="color: #00BFFF;">**Postman**</span> application.
+-   Relevant tests for all API endpoints have been conducted using the <span style="color: #00BFFF;">**Postman**</span> application.
 
-- Use of <span style="color: #00BFFF;">**Bcrypt:**</span> Regarding security aspects, user passwords are encrypted using the hashing technique, which consists of concatenating the password with a randomly generated string called "salt".
+-   Use of <span style="color: #00BFFF;">**Bcrypt:**</span> Regarding security aspects, user passwords are encrypted using the hashing technique, which consists of concatenating the password with a randomly generated string called "salt".
 
-- Furthermore, the user login generates a token on the server following the <span style="color: #00BFFF;">**JSON Web Token (JWT)**</span> scheme. This token is then used to validate calls to non-public endpoints.
+-   Furthermore, the user login generates a token on the server following the <span style="color: #00BFFF;">**JSON Web Token (JWT)**</span> scheme. This token is then used to validate calls to non-public endpoints.
 
-- General development with <span style="color: #00BFFF;">**Javascript**</span>: Allows for efficient handling of asynchronous requests and seamless API integration.
-
-
+-   General development with <span style="color: #00BFFF;">**Javascript**</span>: Allows for efficient handling of asynchronous requests and seamless API integration.
 
 ## **Project Development** 🔧
 
@@ -48,43 +46,45 @@ It consists of the development of a REST API for an e-commerce, for which a data
 
 ---
 
-<span style="color: fuchsia;">**Entity Relationship Diagram:**</span>  
+<span style="color: fuchsia;">**Entity Relationship Diagram:**</span>
 
 ![foto](assets/der.png)
 
 ---
+
 ## **Process steps** 🔩🔧⚙️
 
-1) Dependency installations
+1. Dependency installations
 
-2) Configuration and database creation
+2. Configuration and database creation
 
-3) Creation of models for each table
+3. Creation of models for each table
 
-4) Model migrations
+4. Model migrations
 
-5) Creation of controllers for endpoints
+5. Creation of controllers for endpoints
 
-6) Routes creation
+6. Routes creation
 
-7) Imports
+7. Imports
 
-8) Testing with Postman
+8. Testing with Postman
 
-9) Development of functionality tests and validation  
-  
-
+9. Development of functionality tests and validation
 
 ---
+
 ### **Postman preview:**
-- Create user
-- Login
-- Create an order with products
-- Logout
+
+-   Create user
+-   Login
+-   Create an order with products
+-   Logout
 
 ![foto](assets/postman.gif)
 
 ---
+
 ## Future work
 
 1. Allow the user to select the question's theme, difficulty and number of questions to be answered.
