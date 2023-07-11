@@ -8,7 +8,7 @@
 
 ---
 
-**<h4 style="color: fuchsia;">Included functionalities:</h4>**
+**<h4 style="color: fuchsia;">Included CRUD functionalities:</h4>**
 
 1. Product category management.
 2. Product inventory management.

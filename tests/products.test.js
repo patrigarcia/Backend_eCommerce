@@ -21,7 +21,7 @@ describe("ProductController", () => {
             password: "1233",
         };
 
-        await request(app).post("/users").send(user).expect(201);
+        await request(app).post("/users").send(user).expect(CREATED);
         const loginRes = await request(app).post("/users/login").send({ email: "zeusgatito@gmail.com", password: "1233" }).expect(SERVER_OK);
         token = loginRes.body.token;
     });

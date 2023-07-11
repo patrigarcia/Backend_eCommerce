@@ -1,7 +1,7 @@
 const request = require("supertest");
 const app = require("../index.js");
 
-const { Order, User } = require("../models/index.js");
+const { Order } = require("../models/index.js");
 
 const SERVER_OK = 200;
 const CREATED = 201;
@@ -12,7 +12,7 @@ describe("OrderController", () => {
             name: "Tina",
             surname: "Tinita",
             description: "cliente 1",
-            mail: "tina@gmail.com",
+            mail: "tinaisacat@gmail.com",
             address: "Calle 11",
             tel: 1234567880,
             role: "admin",
@@ -20,7 +20,7 @@ describe("OrderController", () => {
         };
 
         await request(app).post("/users").send(user).expect(CREATED);
-        const loginRes = await request(app).post("/users/login").send({ email: "tina@gmail.com", password: "1253" }).expect(SERVER_OK);
+        const loginRes = await request(app).post("/users/login").send({ email: "tinaisacat@gmail.com", password: "1253" }).expect(SERVER_OK);
         token = loginRes.body.token;
     });
 
@@ -39,10 +39,10 @@ describe("OrderController", () => {
             status: "Pending",
         };
 
-        // Hacer la solicitud de creación del pedido
+        // hago la solicitud para que se cree el producto
         await request(app).post("/orders/productId").set({ Authorization: token }).send(order).expect(SERVER_OK);
 
-        // Verificar que se haya creado el pedido
+        // verifico que se haya creado el pedido
         const countRes = await request(app).get("/orders").set({ Authorization: token }).expect(SERVER_OK);
         expect(countRes.body).toBeDefined();
     });

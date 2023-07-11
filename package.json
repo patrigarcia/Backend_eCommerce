@@ -7,7 +7,11 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "jest",
-    "test:watch": "jest --watchAll --runInBand"
+    "test:watch": "jest --watchAll --runInBand",
+    "test-users":"jest --testPathPattern=users.test.js",
+    "test-products":"jest --testPathPattern=products.test.js",
+    "test-orders":"jest --testPathPattern=orders.test.js",
+    "test-categories":"jest --testPathPattern=categories.test.js"
   },
   "keywords": [],
   "author": "",

@@ -9,7 +9,7 @@ const CREATED = 201;
 describe("CategoryController", () => {
     let token;
 
-    // creo un usuario, hago login y obtengo el token
+    // creo un usuario, hago login y genero el token
     beforeAll(async () => {
         const user = {
             name: "Zeus",
