@@ -22,10 +22,7 @@ module.exports = {
                 unique: true,
                 type: Sequelize.STRING,
             },
-            address: {
-                allowNull: false,
-                type: Sequelize.STRING,
-            },
+
             tel: {
                 allowNull: false,
                 type: Sequelize.INTEGER,

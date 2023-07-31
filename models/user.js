@@ -30,10 +30,6 @@ module.exports = (sequelize, DataTypes) => {
                     isEmail: { msg: "Por favor introduce un correo valido" },
                 },
             },
-            address: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
             tel: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
