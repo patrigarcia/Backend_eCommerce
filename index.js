@@ -9,6 +9,7 @@ app.use("/orders", require("./routes/orders"));
 app.use("/categories", require("./routes/categories"));
 app.use("/products", require("./routes/products"));
 app.use("/adresses", require("./routes/adresses"));
+app.use("/reviews", require("./routes/reviews"));
 
 app.listen(PORT, () => console.log(`Servidor levantado con éxito en el puerto ${PORT}`));
 module.exports = app;
