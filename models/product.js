@@ -43,12 +43,22 @@ module.exports = (sequelize, DataTypes) => {
                     },
                 },
             },
+
             stock: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 validate: {
                     notNull: {
                         msg: "Debe introducir el stock disponible",
+                    },
+                },
+            },
+            imagePath: {
+                type: DataTypes.STRING,
+                allowNull: false,
+                validate: {
+                    notNull: {
+                        msg: "Debe introducir una imagen",
                     },
                 },
             },

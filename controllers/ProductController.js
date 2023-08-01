@@ -3,7 +3,25 @@ const { Product, Category } = require("../models/index.js");
 const ProductController = {
     async create(req, res) {
         try {
-            const product = await Product.create(req.body);
+            // Obtén los datos del formulario (excepto la imagen)
+            const { categoryId, name, description, price, stock } = req.body;
+
+            // Crea el producto sin la imagen
+            const product = await Product.create({
+                categoryId,
+                name,
+                description,
+                price,
+                stock,
+            });
+
+            // Verifica si hay una imagen cargada
+            if (req.file) {
+                // Si hay una imagen, guarda la ruta en el campo "imagePath" del producto
+                product.imagePath = req.file.path;
+                await product.save();
+            }
+
             res.status(201).send({ message: "Producto creado con éxito", product });
         } catch (err) {
             console.error(err);

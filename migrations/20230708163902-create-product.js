@@ -28,6 +28,10 @@ module.exports = {
                 allowNull: false,
                 type: Sequelize.INTEGER,
             },
+            imagePath: {
+                type: Sequelize.STRING,
+                allowNull: false,
+            },
         });
     },
     async down(queryInterface, Sequelize) {
