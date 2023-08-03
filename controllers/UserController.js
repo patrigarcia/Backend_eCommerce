@@ -1,4 +1,4 @@
-const { User, Token, Sequelize } = require("../models/index.js");
+const { User, Order, Product, Token, Sequelize } = require("../models/index.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/config.json")["development"];
@@ -77,6 +77,40 @@ const UserController = {
         } catch (error) {
             console.log(error);
             res.status(500).send({ message: "Hubo un problema al tratar de desconectarte" });
+        }
+    },
+
+    async getUserOrders(req, res) {
+        try {
+            if (!req.user) {
+                return res.status(401).send({ message: "Por favor, inicia sesión para acceder a los pedidos" });
+            }
+
+            const user = req.user;
+
+            const userOrders = await Order.findAll({
+                where: { userId: user.id },
+                include: [
+                    {
+                        model: Product,
+                        attributes: ["id", "name"],
+                    },
+                ],
+            });
+
+            const userData = {
+                id: user.id,
+                name: user.name,
+                orders: userOrders.map((order) => ({
+                    id: order.id,
+                    products: order.Products.map((product) => ({ productId: product.id, productName: product.name })),
+                })),
+            };
+
+            res.status(200).send(userData);
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ message: "Hubo un error al obtener los pedidos del usuario" });
         }
     },
 };

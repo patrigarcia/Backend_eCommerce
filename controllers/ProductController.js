@@ -1,28 +1,23 @@
 const { Product, Category } = require("../models/index.js");
+const fs = require("fs");
+const path = require("path");
 
 const ProductController = {
     async create(req, res) {
         try {
-            // Obtén los datos del formulario (excepto la imagen)
             const { categoryId, name, description, price, stock } = req.body;
+            const imagePath = req.file ? req.file.filename : "";
 
-            // Crea el producto sin la imagen
             const product = await Product.create({
                 categoryId,
                 name,
                 description,
                 price,
                 stock,
+                imagePath,
             });
 
-            // Verifica si hay una imagen cargada
-            if (req.file) {
-                // Si hay una imagen, guarda la ruta en el campo "imagePath" del producto
-                product.imagePath = req.file.path;
-                await product.save();
-            }
-
-            res.status(201).send({ message: "Producto creado con éxito", product });
+            res.status(201).send({ message: "Producto creado con éxito" }); // loguear product
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: "Ha habido un error al crear el producto" });
@@ -50,16 +45,6 @@ const ProductController = {
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: "Ha habido un error al obtener el producto por ID" });
-        }
-    },
-
-    async delete(req, res) {
-        try {
-            await Product.destroy({ where: { name: req.params.name } });
-            res.send({ message: "El producto fue eliminado" });
-        } catch (err) {
-            console.error(err);
-            res.status(500).send({ message: "Ha habido un error al eliminar el producto" });
         }
     },
 
@@ -137,6 +122,32 @@ const ProductController = {
         } catch (error) {
             console.error(error);
             res.status(500).send({ message: "Hubo un error al ordenar los precios" });
+        }
+    },
+
+    async delete(req, res) {
+        try {
+            const productName = req.params.name;
+            const entityFilter = { where: { name: productName } };
+            const product = await Product.findOne(entityFilter);
+
+            if (!product) {
+                return res.status(404).send({ message: "Producto no encontrado" });
+            }
+
+            await Product.destroy(entityFilter);
+
+            if (product.imagePath.trim()) {
+                const imagePath = path.join(__dirname, "..", "uploads", product.imagePath);
+                if (fs.existsSync(imagePath)) {
+                    fs.unlinkSync(imagePath);
+                }
+            }
+
+            res.send({ message: "Producto y su imagen asociada eliminados correctamente" });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ message: "Ha habido un error al eliminar el producto" });
         }
     },
 };

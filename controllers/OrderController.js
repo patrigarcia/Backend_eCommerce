@@ -7,9 +7,9 @@ const OrderController = {
                 return res.status(401).send({ message: "Por favor, inicia sesión para hacer un pedido" });
             }
 
-            const order = await Order.create(req.body);
+            const order = await Order.create({ status: req.body.status, userId: req.user.id, productIds: req.body.productIds });
 
-            // me guardo en una constante todos los id de productos que ingresa el usuario en el body
+            // me guardo en una constante todos los id de productos que ingresa el usuario en el body en un array
             const products = await Product.findAll({ where: { id: req.body.productIds } });
 
             // hago la verificación de que todos los productos que pide existan
@@ -53,36 +53,23 @@ const OrderController = {
         }
     },
 
-
-    async getUserOrders(req, res) {
+    async deleteOrder(req, res) {
         try {
-            if (!req.user) {
-                return res.status(401).send({ message: "Por favor, inicia sesión para acceder a los pedidos" });
+            const orderId = req.params.id;
+
+            const order = await Order.findOne({ where: { id: orderId } });
+            if (!order) {
+                return res.status(404).send({ message: "No se encontró el pedido" });
             }
-    
-            // Obtener el usuario conectado
-            const user = req.user;
-    
-            // Obtener los pedidos del usuario con los productos asociados
-            const userOrders = await Order.findAll({
-                where: { userId: user.id },
-                include: [{ model: Product }],
-            });
-    
-            // Crear un objeto con los datos del usuario y los pedidos
-            const userData = {
-                id: user.id,
-                name: user.name,
-                orders: userOrders,
-            };
-    
-            res.status(200).send(userData);
+
+            await Order.destroy({ where: { id: orderId } });
+
+            res.send({ message: "El pedido fue eliminado exitosamente" });
         } catch (err) {
             console.error(err);
-            res.status(500).send({ message: "Hubo un error al obtener los pedidos del usuario" });
+            res.status(500).send({ message: "Hubo un error al eliminar el pedido" });
         }
-    }
-    
+    },
 };
 
 module.exports = OrderController;
