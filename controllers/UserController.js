@@ -38,16 +38,6 @@ const UserController = {
         }
     },
 
-    async delete(req, res) {
-        try {
-            await User.destroy({ where: { mail: req.params.mail } });
-            res.send({ message: "El usuario fue eliminado" });
-        } catch (err) {
-            console.error(err);
-            res.status(500).send({ message: "Ha habido un error al eliminar el usuario" });
-        }
-    },
-
     async login(req, res) {
         try {
             console.log(req.body);
@@ -113,6 +103,15 @@ const UserController = {
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: "Hubo un error al obtener los pedidos del usuario" });
+        }
+    },
+    async delete(req, res) {
+        try {
+            await User.destroy({ where: { mail: req.params.mail } });
+            res.send({ message: "El usuario fue eliminado" });
+        } catch (err) {
+            console.error(err);
+            res.status(500).send({ message: "Ha habido un error al eliminar el usuario" });
         }
     },
 };

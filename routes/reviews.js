@@ -2,7 +2,7 @@ const express = require("express");
 const ReviewController = require("../controllers/ReviewController");
 
 const router = express.Router();
-const { authentication, isAdmin } = require("../middleware/authentication");
+const { authentication } = require("../middleware/authentication");
 
 router.post("/", authentication, ReviewController.createReview);
 router.get("/", authentication, ReviewController.getAllReviews);

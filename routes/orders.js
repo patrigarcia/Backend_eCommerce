@@ -4,10 +4,9 @@ const OrderController = require("../controllers/OrderController");
 
 const { authentication, isAdmin } = require("../middleware/authentication");
 
-// Ruta para crear un pedido
 router.post("/productId", authentication, OrderController.insert);
-router.get("/", OrderController.getAll);
-router.put("/:Id", OrderController.update);
-router.delete("/:Id", OrderController.deleteOrder);
+router.get("/", authentication, isAdmin, OrderController.getAll);
+router.put("/:Id", authentication, OrderController.update);
+router.delete("/:Id", authentication, OrderController.deleteOrder);
 
 module.exports = router;
