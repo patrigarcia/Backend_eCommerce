@@ -36,25 +36,17 @@ const CategoryController = {
         }
     },
 
-    async getCategoryById(req, res) {
-        const categoryId = req.params.id;
-        try {
-            const category = await Category.findByPk(categoryId);
-            if (!category) {
-                return res.status(404).send({ message: "No se encontró ningúna categoría con el ID proporcionado" });
-            }
-            res.status(200).send(category);
-        } catch (err) {
-            console.error(err);
-            res.status(500).send({ message: "Ha habido un error al obtener la categoría por ID" });
-        }
-    },
-
     async getCategoryByName(req, res) {
         const { categoryName } = req.params;
 
         try {
-            const categories = await Category.findAll({ where: { name: categoryName } });
+            const categories = await Category.findAll({
+                where: { name: categoryName },
+                include: {
+                    model: Product,
+                    attributes: ["id", "name"],
+                },
+            });
 
             if (categories.length === 0) {
                 return res.status(404).send({ message: "No hay categorías con ese nombre" });
@@ -63,7 +55,7 @@ const CategoryController = {
             res.status(200).send(categories);
         } catch (error) {
             console.error(error);
-            res.status(500).send({ message: "Hubo un error al obtener las categorias por su nombre" });
+            res.status(500).send({ message: "Hubo un error al obtener las categorías por su nombre" });
         }
     },
 

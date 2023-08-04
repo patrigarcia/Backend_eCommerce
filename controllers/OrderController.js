@@ -9,19 +9,16 @@ const OrderController = {
 
             const order = await Order.create({ status: req.body.status, userId: req.user.id, productIds: req.body.productIds });
 
-            // me guardo en una constante todos los id de productos que ingresa el usuario en el body en un array
             const products = await Product.findAll({ where: { id: req.body.productIds } });
 
-            // hago la verificación de que todos los productos que pide existan
             if (products.length !== req.body.productIds.length) {
                 return res.status(404).send({ message: "No se encontró uno o más productos" });
             }
 
-            // hago la asociación de cada producto con el pedido
             for (const product of products) {
                 await order.addProduct(product, {
                     through: {
-                        status: req.body.status, // Agregar el estado del pedido
+                        status: req.body.status,
                     },
                 });
             }
@@ -55,7 +52,7 @@ const OrderController = {
 
     async deleteOrder(req, res) {
         try {
-            const orderId = req.params.id;
+            const orderId = req.params.Id;
 
             const order = await Order.findOne({ where: { id: orderId } });
             if (!order) {

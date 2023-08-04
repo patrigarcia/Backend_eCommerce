@@ -1,19 +1,30 @@
-const { Review } = require("../models");
+const { Review, Order, OrderItem } = require("../models");
 
 const ReviewController = {
-    // Crear una nueva reseña
     async createReview(req, res) {
         try {
-            const { id_product, id_user, qualification, comment } = req.body;
+            const { id_product, qualification, comment } = req.body;
+
+            const user = req.user;
+            const orders = await Order.count({
+                where: { userId: user.id, status: "completed" },
+                include: { model: OrderItem, where: { productId: id_product } },
+            });
+
+            if (orders === 0) {
+                return res.status(403).json({ error: "Debes haber realizado un pedido completado con este producto para dejar una review" });
+            }
+
             const newReview = await Review.create({
                 id_product,
-                id_user,
+                id_user: user.id,
                 qualification,
                 comment,
             });
 
             return res.status(201).json({ message: "Review creada exitosamente", data: newReview });
         } catch (error) {
+            console.log(error);
             return res.status(500).json({ error: "Error al crear la review" });
         }
     },
@@ -22,6 +33,7 @@ const ReviewController = {
     async getAllReviews(req, res) {
         try {
             const reviews = await Review.findAll();
+
             return res.status(200).json({ data: reviews });
         } catch (error) {
             return res.status(500).json({ error: "Error al traer las reviews" });

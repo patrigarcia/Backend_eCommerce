@@ -5,10 +5,10 @@ const router = express.Router();
 
 const { authentication, isAdmin } = require("../middleware/authentication");
 
-router.post("/adress", authentication, AdressController.createAdress);
-router.get("/adresses", authentication, AdressController.getAllAdresses);
-router.get("/adress/:id", authentication, AdressController.getAdressById);
-router.put("/adress/:id", authentication, AdressController.updateAdress);
-router.delete("/adress/:id", authentication, AdressController.deleteAdress);
+router.post("/", authentication, AdressController.createAdress);
+router.get("/", authentication, isAdmin, AdressController.getAllAdresses);
+router.get("/adress/:id", authentication, isAdmin, AdressController.getAdressById);
+router.put("/:id", authentication, AdressController.updateAdress);
+router.delete("/:id", authentication, AdressController.deleteAdress);
 
 module.exports = router;
