@@ -100,4 +100,76 @@ It consists of the development of a REST API for an e-commerce, for which a data
 
 ---
 
+# Useful commands
+
+## Docker
+
+Docker installation on Ubuntu:
+
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+Creation of a custom builder:
+
+```bash
+docker buildx create --name mybuilder
+```
+
+Set the custom builder for use:
+
+```bash
+docker buildx use mybuilder
+```
+
+Install specific building plugin for ARM architectures ([source](https://hub.docker.com/r/tonistiigi/binfmt)):
+
+```bash
+sudo docker run --privileged --rm tonistiigi/binfmt --install arm64
+```
+
+Check if the plugin has been installed:
+
+```bash
+docker buildx inspect --bootstrap
+```
+
+Build and push the Docker image ready for ARM and AMD platforms (Docker account required and already logged in):
+
+```bash
+docker buildx build --push --tag dfanaro/e-commerce_backend:latest --platform linux/arm64,linux/amd64 .
+```
+
+Pull the Docker image recently pushed:
+
+```bash
+docker pull dfanaro/e-commerce_backend:latest
+```
+
+Run the Docker image recently pulled:
+
+```bash
+docker run -p 9001:9001 -d --name=e-commerce-api --restart=always -v e-commerce_backend:/usr/src/app/uploads dfanaro/e-commerce_backend:latest
+```
+
+## Sequelize
+
+Create a new migration:
+
+```bash
+npx sequelize-cli migration:generate --name modify_users_add_avatar_column
+```
+
+Migrate changes to the database:
+
+```bash
+npx sequelize-cli db:migrate
+```
+
+Roll back changes made to the database:
+
+```bash
+npx sequelize-cli db:migrate:undo --name 20230822151147-modify_users_add_avatar_column.js
+```
+
 #### Developed by _Patrizia González Garcia_.

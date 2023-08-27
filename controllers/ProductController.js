@@ -1,6 +1,5 @@
 const { Product, Category } = require("../models/index.js");
-const fs = require("fs");
-const path = require("path");
+const deleteImage = require("../utils/deleteImage");
 
 const ProductController = {
     async create(req, res) {
@@ -8,7 +7,7 @@ const ProductController = {
             const { categoryId, name, description, price, stock } = req.body;
             const imagePath = req.file ? req.file.filename : "";
 
-            const product = await Product.create({
+            await Product.create({
                 categoryId,
                 name,
                 description,
@@ -26,7 +25,13 @@ const ProductController = {
 
     async update(req, res) {
         try {
-            await Product.update(req.body, { where: { name: req.params.name } });
+            let updatedProduct = req.body;
+            if (req.file) {
+                updatedProduct = { ...req.body, imagePath: req.file.filename };
+            }
+            const previousImage = (await Product.findByPk(req.params.id)).imagePath;
+            await Product.update(updatedProduct, { where: { id: req.params.id } });
+            deleteImage(previousImage);
             res.send({ message: "El producto se ha actualizado" });
         } catch (err) {
             console.error(err);
@@ -35,9 +40,8 @@ const ProductController = {
     },
 
     async getProductById(req, res) {
-        const productId = req.params.id;
         try {
-            const product = await Product.findByPk(productId);
+            const product = await Product.findByPk(req.params.id);
             if (!product) {
                 return res.status(404).send({ message: "No se encontró ningún producto con el ID proporcionado" });
             }
@@ -127,23 +131,13 @@ const ProductController = {
 
     async delete(req, res) {
         try {
-            const productName = req.params.name;
-            const entityFilter = { where: { name: productName } };
+            const entityFilter = { where: { id: req.params.id } };
             const product = await Product.findOne(entityFilter);
-
             if (!product) {
                 return res.status(404).send({ message: "Producto no encontrado" });
             }
-
             await Product.destroy(entityFilter);
-
-            if (product.imagePath.trim()) {
-                const imagePath = path.join(__dirname, "..", "uploads", product.imagePath);
-                if (fs.existsSync(imagePath)) {
-                    fs.unlinkSync(imagePath);
-                }
-            }
-
+            deleteImage(product.imagePath);
             res.send({ message: "Producto y su imagen asociada eliminados correctamente" });
         } catch (err) {
             console.error(err);

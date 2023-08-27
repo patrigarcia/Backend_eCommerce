@@ -1,15 +1,18 @@
 const { User, Order, Product, Adress, Token, Sequelize } = require("../models/index.js");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const { jwt_secret } = require("../config/config.json")["development"];
 const { Op } = Sequelize;
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const USER_ROLE = "user";
 
 const UserController = {
     async create(req, res) {
         try {
             const password = bcrypt.hashSync(req.body.password, 10);
-            const user = await User.create({ ...req.body, password: password });
-            res.status(201).send({ message: "Usuario creado con éxito", user });
+            const newUser = { ...req.body, password: password, role: USER_ROLE };
+            const resultUser = await User.create(newUser);
+            res.status(201).send({ message: "Usuario creado con éxito", user: resultUser });
         } catch (err) {
             console.error(err);
             res.status(500).send({ message: "Ha habido un error al crear el usuario" });
