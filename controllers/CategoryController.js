@@ -36,21 +36,16 @@ const CategoryController = {
         }
     },
 
-    async getCategoryByName(req, res) {
-        const { categoryName } = req.params;
+    async getCategoryById(req, res) {
+        const { id } = req.params;
 
         try {
             const categories = await Category.findAll({
-                where: { name: categoryName },
+                where: { id: id },
                 include: {
                     model: Product,
-                    attributes: ["id", "name"],
                 },
             });
-
-            if (categories.length === 0) {
-                return res.status(404).send({ message: "No hay categorías con ese nombre" });
-            }
 
             res.status(200).send(categories);
         } catch (error) {

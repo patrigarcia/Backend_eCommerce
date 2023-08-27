@@ -7,7 +7,7 @@ router.post("/", authentication, isAdmin, CategoryController.create);
 router.get("/", CategoryController.getAll);
 router.get("/products/", CategoryController.getAllAndProducts);
 
-router.get("/name/:categoryName", CategoryController.getCategoryByName);
+router.get("/:id", CategoryController.getCategoryById);
 router.delete("/delete/:name", authentication, isAdmin, CategoryController.delete);
 router.put("/update/:name", authentication, isAdmin, CategoryController.update);
 
