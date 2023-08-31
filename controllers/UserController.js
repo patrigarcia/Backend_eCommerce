@@ -88,7 +88,7 @@ const UserController = {
                 include: [
                     {
                         model: Product,
-                        attributes: ["id", "name"],
+                        attributes: ["id", "name", "price"],
                     },
                 ],
             });
@@ -98,7 +98,7 @@ const UserController = {
                 name: user.name,
                 orders: userOrders.map((order) => ({
                     id: order.id,
-                    products: order.Products.map((product) => ({ productId: product.id, productName: product.name })),
+                    products: order.Products.map((product) => ({ productId: product.id, productName: product.name, productPrice: product.price })),
                 })),
             };
 
